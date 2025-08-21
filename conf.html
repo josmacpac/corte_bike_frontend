@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuración</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<script src="scripts/auth.js"></script>
+<script src="scripts/cerrar_sesion.js"></script>
+
+</head>
+
+
+<body class="bg-light">
+<script>verificarAcceso(["admin"]);
+  async function secureFetch(url, options = {}) {
+  const token = localStorage.getItem("token");
+
+  options.headers = {
+    ...(options.headers || {}),
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const res = await fetch(url, options);
+    if (res.status === 401) {
+      mostrarMensajeExpirado();
+      return null;
+    }
+    return res;
+  } catch (error) {
+    console.error("Error de red en secureFetch:", error);
+    mostrarMensajeExpirado();
+    return null;
+  }
+}
+  async function usuarioActual() {
+  
+  try{
+        const res = await secureFetch(`${CONFIG.API_URL}/api/usuarios/perfil`, {
+          method: "GET",
+        });
+        if (!res) return
+
+          if (!res.ok) {
+      // Maneja errores HTTP, por ejemplo token expirado o no autorizado
+      console.error("Error en la respuesta del servidor:", res.status);
+      return;
+    }
+        const usuario = await res.json();
+        const spanusuario = document.getElementById("usuario-actual");
+
+         if (spanusuario && usuario.nombre) {
+      spanusuario.textContent = usuario.nombre;
+    } else {
+      console.warn("Elemento para mostrar usuario no encontrado o nombre inválido.");
+    }
+      
+
+      }catch(error){
+        console.error("Error al procesar usuarios:", error);
+      }
+  
+
+}
+
+usuarioActual();  
+
+</script>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+  <div class="container-fluid">
+    <!-- Logo y nombre del sistema -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="/assets/Picture.png" alt="Logo" width="80" height="40" class="me-2">
+      
+    </a>
+
+    <!-- Botón responsive -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTaller" aria-controls="navbarTaller" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Enlaces del menú -->
+    <div class="collapse navbar-collapse" id="navbarTaller">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link text-secondary active" href="dashboard.html">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" href="reportes.html">Reportes</a>
+        </li>
+        <li class="nav-item">
+  <a class="nav-link text-secondary" href="conf.html">Configuración</a>
+</li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" href="usuarios.html">Usuarios</a>
+        </li>
+      </ul>
+      <!-- Usuario y cerrar sesión -->
+      <div class="d-flex align-items-center">
+  <i class="bi bi-person-circle me-2" style="font-size: 1.5rem; color: #6c757d;"></i>
+  <span id="usuario-actual" class="me-3 text-secondary">Admin</span>
+  <a onclick="cerrar_sesion()" class="btn btn-sm btn-outline-danger">Cerrar sesión</a>
+</div>
+    </div>
+  </div>
+</nav>
+
+ <div class="container construction-container">
+    <h1 class="display-4 text-warning">🚧 Página en construcción...</h1>
+    <p class="lead text-muted">Estamos trabajando para traerte algo genial. ¡Vuelve pronto!</p>
+    <img src="assets/conjunto-de-herramientas-de-arquitecto.jpg" alt="Página en construcción" class="img-fluid" width="500">
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
