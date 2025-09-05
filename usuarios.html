@@ -3,96 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <title>Usuarios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="scripts/conf.js"></script>
-<script src="scripts/globales.js"></script>
-<script src="scripts/auth.js"></script>
-<script src="scripts/usuarios.js"></script>
-<script src="scripts/cerrar_sesion.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles_adm.css">
+  <script src="scripts/conf.js"></script>
+  <script src="scripts/globales.js"></script>
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/usuarios.js"></script>
+  <script src="scripts/cerrar_sesion.js"></script>
+
 </head>
-
-<style>
-body {
-  padding-top: 70px; /* Ajusta según el alto del navbar */
-}
-</style>
 <body class="bg-light">
-<script>//llamamos a la funcion de autenticacion
-
+<script>
   verificarAcceso(["admin"]);
-  
 </script>
+
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-white shadow-sm fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container-fluid">
-    <!-- Logo y nombre del sistema -->
+    <!-- Logo y nombre -->
     <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="/assets/Picture.png" alt="Logo" width="80" height="40" class="me-2">
-      
+      <img src="/assets/Picture.png" alt="Logo" class="img-fluid me-2" style="max-height: 50px;">
+      <span></span>
     </a>
 
     <!-- Botón responsive -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTaller" aria-controls="navbarTaller" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTaller">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Enlaces del menú -->
+    <!-- Menú -->
     <div class="collapse navbar-collapse" id="navbarTaller">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link text-secondary active" href="dashboard.html">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="reportes.html">Reportes</a>
-        </li>
-        <li class="nav-item">
-  <a class="nav-link text-secondary" href="conf.html">Configuración</a>
-</li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="usuarios.html">Usuarios</a>
-        </li>
+        <li class="nav-item"><a class="nav-link text-secondary active" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-secondary" href="reportes.html">Reportes</a></li>
+        <li class="nav-item"><a class="nav-link text-secondary" href="conf.html">Configuración</a></li>
+        <li class="nav-item"><a class="nav-link text-secondary" href="usuarios.html">Usuarios</a></li>
       </ul>
-      <!-- Usuario y cerrar sesión -->
-      
-       <div class="d-flex align-items-center">
-  <i class="bi bi-person-circle me-2" style="font-size: 1.5rem; color: #6c757d;"></i>
-  <span id="usuario-actual" class="me-3 text-secondary">Admin</span>
-  <a onclick="cerrar_sesion()" class="btn btn-sm btn-outline-danger">Cerrar sesión</a>
-</div>
+      <!-- Usuario -->
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person-circle me-2" style="font-size: 1.5rem; color: #6c757d;"></i>
+        <span id="usuario-actual" class="me-3 text-secondary">Admin</span>
+        <a onclick="cerrar_sesion()" class="btn btn-sm btn-outline-danger">Cerrar sesión</a>
+      </div>
     </div>
   </div>
 </nav>
 
+<!-- CONTENIDO -->
 <div class="container my-4">
-  <div class="card shadow p-4" style="max-width: 900px; margin: auto;">
+  <div class="card shadow p-4" style="max-width: 1000px; margin: auto;">
     <h4 class="mb-4 text-center">Usuarios Registrados</h4>
     
-   <div>
-  <a  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">Agregar Usuario</a>
-  <a  class="btn btn-secondary" onclick="recargarPagina()" >Actualizar</a>
-  <br><br>
-</div>
+    <!-- Botones -->
+    <div class="mb-3 d-flex gap-2">
+      <a class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
+        <i class="bi bi-plus-circle me-2"></i>Agregar Usuario
+      </a>
+      <a class="btn btn-secondary shadow-sm" onclick="recargarPagina()">
+        <i class="bi bi-arrow-clockwise me-2"></i>Actualizar
+      </a>
+    </div>
 
+    <!-- Buscador -->
+    <div class="mb-3">
+      <label for="buscadorUsuarios" class="form-label fw-semibold">Buscar Usuario:</label>
+      <input type="text" id="buscadorUsuarios" class="form-control w-50" placeholder="Ej. Juan o 00123">
+    </div>
 
-  <!-- Buscador -->
-<div class="mb-3">
-  <label for="buscadorUsuarios" class="form-label">Buscar Usuario:</label>
-  <input type="text" id="buscadorUsuarios" class="form-control w-50" placeholder="Ej. Juan o 00123">
-</div>
+    <!-- Alertas -->
+    <div class="mb-3">
+      <div id="mensaje-eliminar" class="alert alert-danger d-none w-100"></div>
+      <div id="mensaje-exito-eliminar" class="alert alert-success d-none w-100"></div>
+    </div>
 
-<div class="mb-3">
-  <!-- Alerta para errores -->
-<div id="mensaje-eliminar" class="alert alert-danger d-none w-100" role="alert"></div>
-
-<!-- Alerta para éxito -->
-<div id="mensaje-exito-eliminar" class="alert alert-success d-none w-100" role="alert"></div>
-
-</div>
-
+    <!-- Tabla -->
     <div class="table-responsive">
       <table id="tablaUsuarios" class="table table-striped table-hover align-middle">
-        <thead class="table-success">
+        <thead>
           <tr>
             <th>ID</th>
             <th>Nombre completo</th>
@@ -101,166 +95,123 @@ body {
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody id="usuarios-body">
-          <!-- Aquí irán las filas dinámicas -->
-        </tbody>
+        <tbody id="usuarios-body"></tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- Modal editar usuario -->
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel">
+<!-- MODAL EDITAR USUARIO -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content shadow">
       <form id="form-editar-usuario" class="text-start">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+          <h5 class="modal-title fw-bold">Editar Usuario</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
- 
           <div class="mb-2">
-            <label for="nombre" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="editar-nombre" name="nombre" required>
+            <label class="form-label fw-semibold">Nombre completo</label>
+            <input type="text" class="form-control" id="editar-nombre" required>
           </div>
-
           <div class="mb-2">
-            <label for="email" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="editar-email" name="email" required>
+            <label class="form-label fw-semibold">Correo electrónico</label>
+            <input type="email" class="form-control" id="editar-email" required>
           </div>
-
           <div class="mb-2">
-            <label for="domicilio" class="form-label">Domicilio</label>
-            <input type="text" class="form-control" id="editar-domicilio" name="domicilio" required>
+            <label class="form-label fw-semibold">Domicilio</label>
+            <input type="text" class="form-control" id="editar-domicilio" required>
           </div>
-
           <div class="mb-2">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="tel" class="form-control" id="editar-telefono" name="telefono" maxlength="10" minlength="10" required>
+            <label class="form-label fw-semibold">Teléfono</label>
+            <input type="tel" class="form-control" id="editar-telefono" maxlength="10" minlength="10" required>
           </div>
-
           <div class="mb-2">
-            <label for="contrasena" class="form-label">Cambiar Contraseña</label>
-            <input type="password" class="form-control" id="editar-contrasena" name="contrasena">
+            <label class="form-label fw-semibold">Cambiar Contraseña</label>
+            <input type="password" class="form-control" id="editar-contrasena">
           </div>
-
           <div class="mb-2">
-            <label for="contrasena_conf" class="form-label">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="editar-contrasena_conf" name="contrasena_conf">
+            <label class="form-label fw-semibold">Confirmar contraseña</label>
+            <input type="password" class="form-control" id="editar-contrasena_conf">
           </div>
-           
-
-                
-
           <div class="mb-2">
-            <label for="rol" class="form-label">Rol</label>
-            <select class="form-select" id="editar-rol" name="rol" required>
-              <option value="" selected disabled>-- Elige una opción --</option>
+            <label class="form-label fw-semibold">Rol</label>
+            <select class="form-select" id="editar-rol" required>
+              <option value="" disabled>-- Elige una opción --</option>
               <option value="admin">Administrador</option>
               <option value="cliente">Cliente</option>
             </select>
           </div>
+          <div id="mensaje-editar" class="alert alert-danger d-none"></div>
+          <div id="mensaje-exito-editar" class="alert alert-success d-none"></div>
         </div>
-
-        <div class="modal-footer flex-column align-items-stretch">
-          <!-- Alerta para errores -->
-<div id="mensaje-editar" class="alert alert-danger d-none w-100" role="alert"></div>
-
-<!-- Alerta para éxito -->
-<div id="mensaje-exito-editar" class="alert alert-success d-none w-100" role="alert"></div>
-
-<div class="d-flex justify-content-end mt-2"></div>
+        <div class="modal-footer">
           <button id="btn_actualizarUsuario" class="btn btn-primary">Actualizar</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
         </div>
       </form>
     </div>
   </div>
 </div>
-<!-- fin modal Edicion usuario -->
-  
-<!-- Modal agregar nuevo usuario -->
-<div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-labelledby="modalNuevoUsuarioLabel">
+
+<!-- MODAL NUEVO USUARIO -->
+<div class="modal fade" id="modalNuevoUsuario" tabindex="-1">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content shadow">
       <form id="form-nuevo-usuario" class="text-start">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalNuevoUsuarioLabel">Agregar Nuevo Usuario</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <h5 class="modal-title fw-bold">Agregar Nuevo Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-         
           <div class="mb-2">
-            <label for="nombre" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
+            <label class="form-label fw-semibold">Nombre completo</label>
+            <input type="text" class="form-control" id="nombre" required>
           </div>
-
           <div class="mb-2">
-            <label for="email" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <label class="form-label fw-semibold">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" required>
           </div>
-
           <div class="mb-2">
-            <label for="domicilio" class="form-label">Domicilio</label>
-            <input type="text" class="form-control" id="domicilio" name="domicilio" required>
+            <label class="form-label fw-semibold">Domicilio</label>
+            <input type="text" class="form-control" id="domicilio" required>
           </div>
-
           <div class="mb-2">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="tel" class="form-control" id="telefono" name="telefono" maxlength="10" minlength="10" required>
+            <label class="form-label fw-semibold">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" maxlength="10" minlength="10" required>
           </div>
-
           <div class="mb-2">
-            <label for="contrasena" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+            <label class="form-label fw-semibold">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" required>
           </div>
-
           <div class="mb-2">
-            <label for="contrasena_conf" class="form-label">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="contrasena_conf" name="contrasena_conf" required>
+            <label class="form-label fw-semibold">Confirmar contraseña</label>
+            <input type="password" class="form-control" id="contrasena_conf" required>
           </div>
-
-          <!-- Alerta para errores -->
-          <div id="mensaje-nuevo" class="alert alert-danger d-none" role="alert"></div>
-
           <div class="mb-2">
-            <label for="rol" class="form-label">Rol</label>
-            <select class="form-select" id="rol" name="rol" required>
+            <label class="form-label fw-semibold">Rol</label>
+            <select class="form-select" id="rol" required>
               <option value="" disabled selected>-- Elige una opción --</option>
               <option value="admin">Administrador</option>
               <option value="cliente">Cliente</option>
             </select>
           </div>
+          <div id="mensaje-nuevo" class="alert alert-danger d-none"></div>
+          <div id="mensaje-exito-nuevo" class="alert alert-success d-none"></div>
         </div>
-
-        <div class="modal-footer flex-column align-items-stretch">
-           <!-- Alerta para errores -->
-<div id="mensaje-nuevo" class="alert alert-danger d-none w-100" role="alert"></div>
-
-<!-- Alerta para éxito -->
-<div id="mensaje-exito-nuevo" class="alert alert-success d-none w-100" role="alert"></div>
-<div class="d-flex justify-content-end mt-2">
-
-  <button type="submit" class="btn btn-primary">Guardar</button>
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-</div>
-
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
-  <!--fin modal nuevo usuario-->
- 
 <script>
-//recargar pagina
-  function recargarPagina(){
-    location.reload();
-  }
-
+  function recargarPagina(){ location.reload(); }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>

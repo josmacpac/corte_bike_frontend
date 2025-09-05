@@ -1,20 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ===============================
-  // Funciones principales 
   // ===============================
-
-cargarCitasPendientes();
-cargarCitasFinalizadas();
-
-
-  horariosDisponibles();
-
-  // ===============================
-  // Decodificar token
+  // Funciones principales
   // ===============================
   function obtenerIdToken(token) {
     try {
-      const payloadBase64 = token.split('.')[1];
+      const payloadBase64 = token.split(".")[1];
       const payloadJSON = atob(payloadBase64);
       const payload = JSON.parse(payloadJSON);
       return payload.id || payload.user_id || payload.sub || null;
@@ -23,6 +13,10 @@ cargarCitasFinalizadas();
       return null;
     }
   }
+  cargarCitasPendientes();
+  cargarCitasFinalizadas();
+
+  horariosDisponibles();
 
   // ===============================
   // Registro nueva cita
@@ -38,8 +32,8 @@ cargarCitasFinalizadas();
     const token = localStorage.getItem("token");
     if (!token) return mostrarMensajeExpirado();
 
-    const fechaCita= document.getElementById("fecha-cita").value
-    const horarioCita= document.getElementById("horas-disponibles").value
+    const fechaCita = document.getElementById("fecha-cita").value;
+    const horarioCita = document.getElementById("horas-disponibles").value;
     const fechaHoraCita = `${fechaCita}T${horarioCita}:00`;
 
     const data = {
@@ -63,179 +57,241 @@ cargarCitasFinalizadas();
       });
 
       const resultado = await res.json();
-      if (!res.ok) throw new Error(resultado.error || "Error al registrar cita");
+      if (!res.ok)
+        throw new Error(resultado.error || "Error al registrar cita");
 
       const mensajeExito = document.getElementById("mensaje-exito");
       if (mensajeExito) {
-       const fechaEntrega = new Date(resultado.fecha_entrega).toLocaleString("es-MX", {
-    dateStyle: "medium",
-    timeStyle: "short"
-  });
-  console.log("fecha de entrega:", fechaEntrega)
+        const fechaEntrega = new Date(resultado.fecha_entrega).toLocaleString(
+          "es-MX",
+          {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }
+        );
+        console.log("fecha de entrega:", fechaEntrega);
 
-  mensajeExito.innerHTML = `
+        mensajeExito.innerHTML = `
     ✅ Cita registrada con éxito.<br>
     <strong>Número de cita:</strong> ${resultado.idCita}<br>
     <strong>Fecha estimada de entrega:</strong> ${fechaEntrega}
   `;
-  mensajeExito.classList.remove("d-none");
-
+        mensajeExito.classList.remove("d-none");
       }
 
       setTimeout(() => {
-        const modal = bootstrap.Modal.getInstance(document.getElementById("modalNuevaCita"));
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("modalNuevaCita")
+        );
         if (modal) modal.hide();
 
         if (mensajeExito) mensajeExito.classList.add("d-none");
         // Limpiar formulario
-  const form = document.getElementById("form-nueva-cita");
-  if (form){
-    form.reset();
-    recargarPagina();
-  } 
+        const form = document.getElementById("form-nueva-cita");
+        if (form) {
+          form.reset();
+          recargarPagina();
+        }
       }, 5000);
     } catch (error) {
       console.error("Error en el registro:", error);
       const mensajeDiv = document.getElementById("mensaje-error");
       if (mensajeDiv) {
-        mensajeDiv.textContent = error.message || "Ocurrió un error al registrar la cita.";
+        mensajeDiv.textContent =
+          error.message || "Ocurrió un error al registrar la cita.";
         mensajeDiv.classList.remove("d-none");
       }
     }
-    
   }
- // ===============================
+  // ===============================
   // Cargar citas pendientes
   // ===============================
 
   async function cargarCitasPendientes() {
-  try {
-    const res = await secureFetch(`${CONFIG.API_URL}/api/citas/mis_citas`, {
-      method: "GET",
-    });
+    try {
+      const res = await secureFetch(`${CONFIG.API_URL}/api/citas/mis_citas`, {
+        method: "GET",
+      });
 
-    if (!res.ok) throw new Error("No se pudo cargar citas");
+      if (!res.ok) throw new Error("No se pudo cargar citas");
 
-    const citas = await res.json();
-    const listadoCitasPendientes = document.getElementById("tablaCitas");
-    listadoCitasPendientes.innerHTML = ""; // limpiar antes de agregar
+      const citas = await res.json();
+      const listadoCitasPendientes = document.getElementById("tablaCitas");
+      listadoCitasPendientes.innerHTML = ""; // limpiar antes de agregar
 
-    citas.forEach((cita) => {
-      const fila = document.createElement("tr");
+      citas.forEach((cita) => {
+        const fila = document.createElement("tr");
 
-      fila.innerHTML = `
+        fila.innerHTML = `
         <td>${cita.id}</td>
         <td>${new Date(cita.fecha_entrega).toLocaleString()}</td>
         <td>${cita.estado}</td>
-        <td><button class="btn btn-sm btn-danger btn-cancelar-cita" data-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#modalConfirmarCancelar">Cancelar</button></td>
+        <td><button class="btn btn-sm btn-danger btn-cancelar-cita" data-id="${
+          cita.id
+        }" data-bs-toggle="modal" data-bs-target="#modalConfirmarCancelar">Cancelar</button></td>
       `;
 
-      listadoCitasPendientes.appendChild(fila);
-    });
-  } catch (error) {
-    console.error("Error al procesar citas:", error);
+        listadoCitasPendientes.appendChild(fila);
+      });
+    } catch (error) {
+      console.error("Error al procesar citas:", error);
+    }
   }
-}
 
-// ===============================
+  // ===============================
   // Cargar citas finalizadas/canceladas
   // ===============================
 
   async function cargarCitasFinalizadas() {
-  try {
-    const res = await secureFetch(`${CONFIG.API_URL}/api/citas/mis_citas_finalizadas`, {
-      method: "GET",
-    });
+    try {
+      const res = await secureFetch(
+        `${CONFIG.API_URL}/api/citas/mis_citas_finalizadas`,
+        {
+          method: "GET",
+        }
+      );
 
-    if (!res.ok) throw new Error("No se pudo cargar citas");
+      if (!res.ok) throw new Error("No se pudo cargar citas");
 
-    const citas = await res.json();
-    const listadoCitasPendientes = document.getElementById("tablaCitasFinalizadas");
-    listadoCitasPendientes.innerHTML = ""; // limpiar antes de agregar
+      const citas = await res.json();
+      const listadoCitasPendientes = document.getElementById(
+        "tablaCitasFinalizadas"
+      );
+      listadoCitasPendientes.innerHTML = ""; // limpiar antes de agregar
 
-    citas.forEach((cita) => {
-      const fila = document.createElement("tr");
+      citas.forEach((cita) => {
+        const fila = document.createElement("tr");
 
-      fila.innerHTML = `
+        fila.innerHTML = `
         <td>${cita.id}</td>
         <td>${new Date(cita.fecha_entrega).toLocaleString()}</td>
         <td>${cita.estado}</td>
       `;
 
-      listadoCitasPendientes.appendChild(fila);
-    });
-  } catch (error) {
-    console.error("Error al procesar citas:", error);
+        listadoCitasPendientes.appendChild(fila);
+      });
+    } catch (error) {
+      console.error("Error al procesar citas:", error);
+    }
   }
-}
 
+  //Establecer fecha minima para registrar cita
+  fechaMinima();
 
-//Establecer fecha minima para registrar cita 
-fechaMinima();
+  //Editar cita
+  //agregar validacion, no se puede cancelar una cita en proceso o finalizada
+  async function editarCita(id, data) {
+    const token = localStorage.getItem("token");
+    if (!token) return mostrarMensajeExpirado();
 
-
-
-//Editar cita
-//agregar validacion, no se puede cancelar una cita en proceso o finalizada
-async function editarCita(id, data) {
-
-  const token = localStorage.getItem("token");
-  if (!token) return mostrarMensajeExpirado();
-
-  
-  try{
-    const res = await secureFetch(`${CONFIG.API_URL}/api/citas/editar_cita/${id}`,{
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-     if (!res.ok) {
+    try {
+      const res = await secureFetch(
+        `${CONFIG.API_URL}/api/citas/editar_cita/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      if (!res.ok) {
+        throw new Error(`Error en la petición: ${res.status}`);
+      }
+    } catch (error) {
       throw new Error(`Error en la petición: ${res.status}`);
+      throw error;
+    }
+  }
+
+  let citaSeleccionada = null;
+
+  const modal = document.getElementById("modalConfirmarCancelar");
+
+  // Evento que se dispara cuando el modal se va a mostrar
+  modal.addEventListener("show.bs.modal", (event) => {
+    // `event.relatedTarget` es el botón que disparó el modal
+    const boton = event.relatedTarget;
+    citaSeleccionada = boton.getAttribute("data-id");
+    console.log("Cita seleccionada:", citaSeleccionada);
+  });
+
+  document
+    .getElementById("btnConfirmarCancelar")
+    .addEventListener("click", async () => {
+      if (!citaSeleccionada) return;
+      try {
+        const resultado = await editarCita(citaSeleccionada, {
+          estado: "cancelado",
+        });
+        console.log("Cita cancelada:", resultado);
+
+        setTimeout(() => {
+          bootstrap.Modal.getInstance(modal).hide();
+          citaSeleccionada = null;
+          cargarCitasPendientes();
+        }, 2000);
+      } catch (error) {
+        alert("Nose puedo cancelar la cita seleccionada");
+      }
+    });
+
+  // ===============================
+  // Cargar bicis nueva cita
+  // ===============================
+
+  const botonCita = document.getElementById("btn-modal-cita");
+
+  botonCita.addEventListener("click", cargarBicisCita );
+
+    async function cargarBicisCita(){
+
+      console.log("click en el boton del modal ...");
+      const token = localStorage.getItem("token");
+      if (!token) return mostrarMensajeExpirado();
+      try {
+        const res = await secureFetch(`${CONFIG.API_URL}/api/bicis/mis_bicis`, { method: "GET" });
+        if (!res) throw new Error("No se pudo cargar las bicis");
+  
+        const bicis = await res.json();
+        console.log(bicis);
+        crearListadoBicis(bicis);
+      } catch (error) {
+        console.error("Error al cargar bicis:", error);
+      }
+
     }
 
-  }catch(error){
-    throw new Error(`Error en la petición: ${res.status}`);
-    throw error;
-  }
+
+    function crearListadoBicis(bicis){
+
+     const lista = document.getElementById("lista-bicis");
+     bicis.forEach((bici, index) =>{
+
+      const li = document.createElement("li");
+      const div = document.createElement("div");
+      div.classList.add("form-check");
+
+      const input = document.createElement("input");
+  input.type = "checkbox";
+  input.classList.add("form-check-input");
+  input.value = bici.bici_id;
+  input.id = `chk${index + 1}`;
+
+  const label = document.createElement("label");
+  label.classList.add("form-check-label");
+  label.setAttribute("for", `chk${index + 1}`);
+  label.textContent = bici.modelo;
+
+  div.appendChild(input);
+  div.appendChild(label);
+  li.appendChild(div);
+  lista.appendChild(li);
+     })
+
+    }
+ 
 
   
-}
-
-let citaSeleccionada = null;
-
-const modal = document.getElementById("modalConfirmarCancelar");
-
-// Evento que se dispara cuando el modal se va a mostrar
-modal.addEventListener("show.bs.modal", event => {
-  // `event.relatedTarget` es el botón que disparó el modal
-  const boton = event.relatedTarget;
-  citaSeleccionada = boton.getAttribute("data-id");
-  console.log("Cita seleccionada:", citaSeleccionada);
-});
-
-document.getElementById("btnConfirmarCancelar").addEventListener("click", async ()=>{
-if (!citaSeleccionada) return;
-try{
-const resultado = await editarCita(citaSeleccionada, {estado:"cancelado"});
-console.log("Cita cancelada:", resultado);
-
-setTimeout(() => {
-  bootstrap.Modal.getInstance(modal).hide();
-      citaSeleccionada = null;
-      cargarCitasPendientes();
-      
-      
-    }, 2000);
-
-
-}catch(error)
-{
-alert("Nose puedo cancelar la cita seleccionada");
-}
-})
-
-
 });

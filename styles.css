@@ -1,0 +1,324 @@
+/* ====== Estilos Globales ====== */
+body { 
+  padding-top: 70px; 
+  margin: 0; 
+  font-family: 'Montserrat', sans-serif; 
+}
+
+/* ====== Cards ====== */
+.card-header { 
+  font-weight: 600; 
+}
+
+.login-card { 
+  background: rgba(255,255,255,0.75); /* más opaco para legibilidad */
+  border-radius: 1rem; 
+  padding: 2rem; 
+  position: relative;
+  z-index: 1;
+}
+
+.form-section { 
+  background: rgba(255,255,255,0.95); 
+  border-radius: 1rem; 
+  padding: 1.5rem; 
+  margin-bottom: 1.5rem; 
+  position: relative;
+  z-index: 1;
+}
+
+/* ====== Hero Section ====== */
+.bg-parallax {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: url("assets/bike3.jpg") no-repeat center center/cover; 
+  z-index: -1;
+}
+
+.overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background: rgba(0,0,0,0.4); /* ligeramente más claro */
+  z-index: -1; 
+}
+
+.hero { 
+  min-height: 90vh; 
+  display: flex; 
+  align-items: center; 
+  font-family: 'Montserrat', sans-serif; 
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 { 
+  font-weight: 800; 
+  font-size: 2.5rem; 
+  text-transform: uppercase; 
+  color: #fff; 
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
+}
+
+.hero h2 { 
+  font-weight: 400; 
+  font-size: 1.5rem; 
+  color: #fff; 
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
+}
+
+.hero h3 { 
+  color: #fff; 
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5); 
+}
+
+.hero .highlight { 
+  background: #FFD600; 
+  color: #000; 
+  padding: 0 8px; 
+  border-radius: 4px; 
+}
+
+/* ====== Botones ====== */
+.btn-primary { 
+  background-color: #FFD600; 
+  border: none; 
+  color: #000; 
+  font-weight: 600; 
+}
+
+.btn-primary:hover { 
+  background-color: #e6c200; 
+}
+
+/* ====== Footer ====== */
+.footer { 
+  background: #fff; 
+  text-align: center; 
+  padding: 2rem 1rem; 
+  position: relative;
+  z-index: 1;
+}
+
+/* ====== Imagen Bici ====== */
+.bike-img {
+  max-width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0);
+  margin: 0 auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .bike-img {
+    max-height: 250px;
+  }
+}
+
+/* ====== Bici Cards ====== */
+.bici-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.bici-header {
+  background: #0d6efd;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+}
+
+.bici-card.activa .bici-detalles {
+  display: block;
+}
+
+.bici-detalles {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.bici-detalles p {
+  font-size: 0.7rem;
+  font-weight: 300;
+  margin: 2px 0;
+}
+
+/* ====== Secciones Domicilio, Eventos y Redes ====== */
+#ubicacion, #eventos, #redes {
+  background-color: rgba(255, 255, 255, 0.75); /* más opaco para legibilidad */
+  padding: 40px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+#ubicacion h2, #eventos h2, #redes h2 {
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#ubicacion p, #eventos p {
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Contenedor de mapa */
+#mapa {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+/* ====== Eventos Slide ====== */
+/* Contenedor del evento */
+.event-card {
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  padding: 2rem;
+}
+
+/* Información del evento (izquierda) */
+.event-info {
+  padding: 1rem;
+  text-align: left;
+}
+
+/* Carousel y sus imágenes (derecha) */
+.event-carousel {
+  padding: 1rem;
+  max-height: 450px; /* Aumentamos altura para que la imagen se vea grande */
+}
+
+.event-img {
+  width: 100%;
+  height: 100%;      /* ocupa todo el contenedor */
+  object-fit: contain; /* mantiene toda la imagen visible */
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+
+/* Carousel limitado en altura */
+.carousel-inner {
+  max-height: 450px;
+  overflow: hidden;
+}
+
+/* Título sección */
+#eventos h2 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+/* Responsivo: en móviles se apilen verticalmente */
+@media (max-width: 768px) {
+  .event-card {
+    flex-direction: column;
+  }
+  .event-info, .event-carousel {
+    max-width: 100%;
+  }
+}
+
+/* Tabla comparativa */
+.table {
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1rem;
+}
+.table-premiere {
+  background-color: rgba(255, 215, 0, 0.2);
+  font-weight: bold;
+}
+
+/* Botón reserva */
+.hero .btn {
+  margin-top: 20px;
+  border-radius: 30px;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+}
+
+/* Hover redes sociales (si las usas en footer o sección extra) */
+.redes-icons a {
+  font-size: 2rem;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+.redes-icons a:hover .bi-instagram { color: #E1306C; }
+.redes-icons a:hover .bi-facebook { color: #1877F2; }
+.redes-icons a:hover .bi-whatsapp { color: #25D366; }
+
+.table {
+  background-color: rgba(0,0,0,0.7) !important;
+}
+
+.hero .btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hero .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Cards de servicios móviles */
+
+
+.mobile-service-card h6 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-service-card p {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+/* Carousel ajustes */
+.carousel-inner {
+  padding: 1rem 0;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 50%;
+}
+.mobile-service-card ul {
+  padding-left: 0;       /* quitar la sangría */
+  margin-bottom: 0.5rem;
+  list-style: none;      /* quita los puntos */
+}
+
+.mobile-service-card ul li {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+

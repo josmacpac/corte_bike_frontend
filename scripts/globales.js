@@ -1,5 +1,10 @@
 // Funciones Globales
 
+// ===============================
+  // Decodificar token
+  // ===============================
+
+
 async function secureFetch(url, options = {}) {
   const token = localStorage.getItem("token");
 
@@ -137,3 +142,5 @@ function fechaMinima(){
   
       inputFecha.min = `${yyyy}-${mm}-${dd}`;
 } 
+
+

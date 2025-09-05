@@ -1,0 +1,12 @@
+ body { 
+      padding-top: 70px; 
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .navbar-brand span { font-weight: 600; color: #6c757d; }
+    .btn-primary { background-color:#FFD600; border:none; color:#000; font-weight:600; }
+    .btn-primary:hover { background-color:#e6c200; }
+    .btn-success { font-weight:600; }
+    .card-header { font-weight:600; }
+    .table thead { background-color:#f1f1f1; font-weight:600; }
+    .modal-header { background:#f8f9fa; }

@@ -4,113 +4,116 @@
   <meta charset="UTF-8">
   <title>Mis Bicis - Corte Bike Shop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap -->
   <link 
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
     rel="stylesheet"
   >
-  <script src="scripts/conf.js"></script>
-  <script src="scripts/auth.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
+<script src="scripts/conf.js"></script>
+<script src="scripts/globales.js"></script>
+<script src="scripts/auth.js"></script>
 <body class="bg-light">
 
-  <script>
+<script>
+  // Verificar usuario logueado
+  verificarAcceso(["cliente"]);
 
-    //verificar usuario logeado
-    verificarAcceso(["cliente"]);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Debes iniciar sesión");
+    window.location.href = '/';
+  }
 
-    const token = localStorage.getItem("token"); //obtener token guardado en localstorage
-    console.log(token)
+  function cerrar_sesion(){
+    localStorage.removeItem("token");
+    window.location.href = '/';
+  }
+</script>
 
-    if(!token){ //si no existe ningun token guardado, pedira el login y redirigira a la pagina de inicio 
-      alert("Debes iniciar sesion")
-      window.location.href= '/';
-      
-    }
-    fetch(`${CONFIG.API_URL}/api/usuarios/perfil`, {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        "Content-Type": "application/json"
-      }
-    })
-    .then(res => {
-      if(!res.ok)throw new Error("Token invalido o caducado");
-      return res.json();
-    })
-    .then(usuario => {
-      console.log("Usuario autenticado", usuario);
-      //Mostrar datos en pantalla del usuario logeado
-      const nombreUsuario = usuario.nombre;
-      document.getElementById("bienvenida").innerText = `Hola, ${nombreUsuario}!`;
-    })
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="/assets/Picture.png" alt="Logo del taller" class="img-fluid me-2" style="max-height: 50px;">
+      <span class="fw-bold text-secondary"></span>
+    </a>
 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    //Hacer otro feth para obtener las citas del usuario
-  </script>
-
-  <!-- Barra superior -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container-fluid">
-      
-      <!-- Logo -->
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img 
-          src="/assets/Picture.png" 
-          alt="Logo del taller" 
-          class="img-fluid me-2" 
-          style="max-height: 50px;"
-        >
-        <span class="fw-bold text-secondary"></span>
-      </a>
-
-      <!-- Botón menú móvil -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Enlaces -->
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="citas.html">Citas</a></li>
-          <li class="nav-item"><a class="nav-link" href="bicis_cliente.html">Mis bicis</a></li>
-          <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="promo.html">Promociones</a></li>
-          <li onclick="cerrar_sesion()" class="nav-item"><a class="nav-link text-danger" href="#">Cerrar sesión</a></li>
-        </ul>
-       
-      </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="citas.html">Citas</a></li>
+        <li class="nav-item"><a class="nav-link active" href="bicis_cliente.html">Mis bicis</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="promo.html">Promociones</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="#" onclick="cerrar_sesion()">Cerrar sesión</a></li>
+      </ul>
     </div>
-  </nav>
-<div class="container mt-5 text-center">
-  <h2 id="bienvenida" class="text-primary">Cargando usuario...</h2>
+  </div>
+</nav>
+
+<!-- Contenido Principal -->
+<div class="container my-5">
+  <div class="row g-4">
+
+    <!-- Columna única -->
+    <div class="col-12">
+      
+      <!-- Formulario Nueva Bici -->
+      <div class="form-section shadow-sm">
+        <h4 class="mb-3 fw-bold">Registrar Nueva Bici</h4>
+        <form id="form-nueva-bici" class="row g-3">
+          <div class="col-md-4"><input type="text" class="form-control" id="marca" placeholder="Marca" required></div>
+          <div class="col-md-4"><input type="text" class="form-control" id="modelo" placeholder="Modelo" required></div>
+          <div class="col-md-4"><select class="form-select text-muted" id="tipo" required>
+    <option value="" selected disabled>Tipo de bici</option>
+    <option value="Montaña">Montaña</option>
+    <option value="Ruta">Ruta</option>
+    <option value="Urbana">Urbana</option>
+    <option value="BMX">BMX</option>
+  </select></div>
+          <div class="col-md-4"><select class="form-select text-muted" id="talla" required>
+    <option value="" selected disabled>Talla</option>
+    <option value="S">S</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+    <option value="XL">XL</option>
+  </select></div>
+          <div class="col-md-4"><select class="form-select text-muted" id="rodada" required>
+    <option value="" selected disabled>Rodada</option>
+    <option value="20">20"</option>
+    <option value="24">24"</option>
+    <option value="26">26"</option>
+    <option value="27.5">27.5"</option>
+    <option value="29">29"</option>
+  </select></div>
+          <div class="col-md-4"><input type="text" class="form-control" id="color" placeholder="Color" required></div>
+          <div class="col-md-6"><input type="text" class="form-control" id="noSerie" placeholder="No. Serie" required></div>
+          <div class="col-md-6"><button type="submit" class="btn btn-primary w-100">Guardar Bici</button></div>
+        </form>
+      </div>
+
+      <!-- Lista de Bicis -->
+      <div class="card shadow-sm mt-4">
+        <div class="card-header bg-warning text-white">Bicis Registradas</div>
+        <div class="card-body">
+          <div id="listaBicis" class="d-flex flex-column gap-3">
+            <!-- Aquí se generan las cards -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
-<div class="container construction-container">
-    <h1 class="display-4 text-warning">🚧 Página en construcción...</h1>
-    <p class="lead text-muted">Estamos trabajando para traerte algo genial. ¡Vuelve pronto!</p>
-    <img src="assets/conjunto-de-herramientas-de-arquitecto.jpg" alt="Página en construcción" class="img-fluid" width="500">
-  </div>
-  <!-- Bootstrap JS -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-  </script>
-
-  <!-- Mostrar nombre de usuario desde localStorage -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const nombre = localStorage.getItem("usuario_nombre");
-      document.getElementById("usuario-nombre").textContent = nombre || "Invitado";
-    });
-
-
-    function cerrar_sesion(){
-      localStorage.removeItem("token");
-      window.location.href = '/';
-
-    }
-  </script>
-
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="scripts/bicis.js"></script>
 </body>
 </html>
