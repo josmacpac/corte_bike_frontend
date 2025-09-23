@@ -39,10 +39,10 @@
       return res.json();
     })
     .then(usuario => {
-      console.log("Usuario autenticado", usuario);
+    
       const nombreUsuario = usuario.nombre;
       document.getElementById("bienvenida").innerText = `Hola, ${nombreUsuario}!`;
-     // document.getElementById("usuario-nombre").textContent = nombreUsuario;
+    
     });
 
     function cerrar_sesion(){
@@ -67,8 +67,7 @@
         <ul class="navbar-nav mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="#">Citas</a></li>
           <li class="nav-item"><a class="nav-link" href="bicis_cliente.html">Mis bicis</a></li>
-          <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="promo.html">Promociones</a></li>
+          
           <li class="nav-item"><a class="nav-link text-danger" href="#" onclick="cerrar_sesion()">Cerrar sesión</a></li>
         </ul>
       </div>
@@ -169,10 +168,7 @@
               </select>
             </div>
 
-            <div class="mb-3">
-              <label for="cantidad_bici" class="form-label">Cantidad Bicicletas</label>
-              <input type="number" class="form-control" id="cantidad_bici" min="0" max="10" required>
-            </div>
+            
               <!-- Bicicletas: texto + dropdown en la misma línea -->
           <div class="mb-3 d-flex align-items-center">
             <p class="lead mb-0 me-3">Bicicletas:</p>
@@ -237,7 +233,7 @@
       </div>
       
     </div>
-  </div>
+  </div> 
 </div>
 
   <!-- Bootstrap Bundle -->

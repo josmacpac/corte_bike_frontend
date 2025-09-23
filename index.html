@@ -14,27 +14,24 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm border-bottom">
-  <div class="container-fluid">
+<nav class="navbar navbar-light bg-white fixed-top shadow-sm border-bottom">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="#">
       <img src="assets/Picture.png" alt="Logo" width="100" height="40" class="me-2">
     </a>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          
-          <li class="nav-item">
-  <a class="nav-link text-success fw-semibold" 
-     href="#" 
-     data-bs-toggle="modal" 
-     data-bs-target="#loginModal">
-    Iniciar sesión
-  </a>
-</li>
 
-        </ul>
-      </div>
+    <!-- Botón Iniciar Sesión (simple, estilo link) -->
+    <a class="nav-link text-success fw-semibold"
+       href="#"
+       data-bs-toggle="modal"
+       data-bs-target="#loginModal">
+      Iniciar sesión
+    </a>
   </div>
 </nav>
+
+
 
 <!-- Fondo -->
 <div class="bg-parallax"></div>
@@ -49,6 +46,65 @@
       <button class="btn btn-warning btn-lg fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">
         Reserva tu cita
       </button>
+           <!-- Carousel para móvil -->
+<div class="">
+  <div id="mobileServiceCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <!-- Card 1 -->
+      <div class="carousel-item active">
+        <div class="mobile-service-card p-3 rounded mx-2">
+          <h6>Mantenimiento General</h6>
+          <ul>
+            <li>Lavado completo</li>
+            <li>Ajuste de frenos y cambios</li>
+            <li>Lubricación de cadena, shifters y partes móviles</li>
+            <li>Revisión de componentes</li>
+          </ul>
+          <p><strong>Precio: $300</strong></p>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="carousel-item">
+        <div class="mobile-service-card p-3 rounded mx-2">
+          <h6>Especial</h6>
+          <ul>
+            <li>Mantenimiento General</li>
+            <li>+</li>
+            <li>Engrasado de centro de bielas</li>
+            <li>Engrasado de dirección</li>
+            <li>Engrasado de masas</li>
+
+          </ul>
+          <p><strong>Precio: $600</strong></p>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="carousel-item">
+        <div class="mobile-service-card p-3 rounded mx-2">
+          <h6>Premiere</h6>
+          <ul>
+            <li>Servicio Especial</li>
+            <li>+</li>
+            <li>Alineación de aros</li>
+            <li>Recarga de líquido Stans</li>
+            <li>Funda de cambio y remotos Alligator</li>
+            <li>Purga de freno delantero y trasero</li>
+          </ul>
+          <p><strong>Precio: $1,150</strong></p>
+        </div>
+      </div>
+      <!-- Más cards según tus servicios -->
+    </div>
+    <!-- Controles del carousel -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#mobileServiceCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mobileServiceCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</div>
+
       <!-- Tabla comparativa -->
       <div class="table-responsive my-4 d-none d-md-block">
         <table class="table table-bordered text-white align-middle">
@@ -137,64 +193,6 @@
         </table>
       </div>
 
-     <!-- Carousel para móvil -->
-<div class="d-block d-md-none">
-  <div id="mobileServiceCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <!-- Card 1 -->
-      <div class="carousel-item active">
-        <div class="mobile-service-card p-3 rounded mx-2">
-          <h6>Mantenimiento General</h6>
-          <ul>
-            <li>Lavado completo</li>
-            <li>Ajuste de frenos y cambios</li>
-            <li>Lubricación de cadena, shifters y partes móviles</li>
-            <li>Revisión de componentes</li>
-          </ul>
-          <p><strong>Precio: $300</strong></p>
-        </div>
-      </div>
-      <!-- Card 2 -->
-      <div class="carousel-item">
-        <div class="mobile-service-card p-3 rounded mx-2">
-          <h6>Especial</h6>
-          <ul>
-            <li>Mantenimiento General</li>
-            <li>+</li>
-            <li>Engrasado de centro de bielas</li>
-            <li>Engrasado de dirección</li>
-            <li>Engrasado de masas</li>
-
-          </ul>
-          <p><strong>Precio: $600</strong></p>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="carousel-item">
-        <div class="mobile-service-card p-3 rounded mx-2">
-          <h6>Premiere</h6>
-          <ul>
-            <li>Servicio Especial</li>
-            <li>+</li>
-            <li>Alineación de aros</li>
-            <li>Recarga de líquido Stans</li>
-            <li>Funda de cambio y remotos Alligator</li>
-            <li>Purga de freno delantero y trasero</li>
-          </ul>
-          <p><strong>Precio: $1,150</strong></p>
-        </div>
-      </div>
-      <!-- Más cards según tus servicios -->
-    </div>
-    <!-- Controles del carousel -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#mobileServiceCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#mobileServiceCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-</div>
     </div>
   </section>
 <!-- Modal de Login -->
@@ -329,32 +327,51 @@
       </div>
       <div class="modal-body">
         <form id="registro-form">
-          <div class="mb-2">
-            <label for="nombreRegister" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="nombreRegister" name="nombre" required>
-          </div>
-          <div class="mb-2">
-            <label for="emailRegister" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="emailRegister" name="email" required>
-          </div>
-          <div class="mb-2">
-            <label for="passwordRegister" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="passwordRegister" name="contrasena" required>
-          </div>
-          <div class="mb-2">
-            <label for="passwordRegisterConf" class="form-label">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="passwordRegisterConf" name="contrasena_conf" required>
-          </div>
-          <div class="mb-2">
-            <label for="telefonoRegister" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefonoRegister" name="telefono" required>
-          </div>
-          <div class="mb-2">
-            <label for="domicilioRegister" class="form-label">Domicilio</label>
-            <input type="text" class="form-control" id="domicilioRegister" name="domicilio" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Registrar</button>
-        </form>
+  <div class="mb-2">
+    <label for="nombreRegister" class="form-label">Nombre completo</label>
+    <input type="text" class="form-control" id="nombreRegister" name="nombre" 
+           required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,50}" 
+           title="Solo letras y espacios (mínimo 3, máximo 50 caracteres)">
+  </div>
+
+  <div class="mb-2">
+  <label for="emailRegister" class="form-label">Correo electrónico</label>
+  <input type="email" class="form-control" id="emailRegister" name="email"
+         required
+         pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+         title="Ingresa un correo válido. Solo letras, números, y los símbolos . _ % + - @">
+</div>
+
+
+  <div class="mb-2">
+    <label for="passwordRegister" class="form-label">Contraseña</label>
+    <input type="password" class="form-control" id="passwordRegister" name="contrasena" 
+           required pattern=".{6,}" 
+           title="La contraseña debe tener al menos 6 caracteres">
+  </div>
+
+  <div class="mb-2">
+    <label for="passwordRegisterConf" class="form-label">Confirmar contraseña</label>
+    <input type="password" class="form-control" id="passwordRegisterConf" name="contrasena_conf" required>
+  </div>
+
+  <div class="mb-2">
+    <label for="telefonoRegister" class="form-label">Teléfono</label>
+    <input type="text" class="form-control" id="telefonoRegister" name="telefono" 
+           required pattern="[0-9]{10}" 
+           title="El teléfono debe contener 10 dígitos numéricos">
+  </div>
+
+  <div class="mb-2">
+    <label for="domicilioRegister" class="form-label">Domicilio</label>
+    <input type="text" class="form-control" id="domicilioRegister" name="domicilio" 
+           required pattern="[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s\.,#-]{5,100}" 
+           title="Solo letras, números y algunos símbolos (. , # -). Entre 5 y 100 caracteres.">
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">Registrar</button>
+</form>
+
         <div id="mensajeRegistro" class="mt-2 text-center text-danger"></div>
       </div>
     </div>

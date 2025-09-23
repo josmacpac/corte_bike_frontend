@@ -1,5 +1,7 @@
 // Funciones Globales
 
+
+
 // ===============================
   // Decodificar token
   // ===============================
@@ -144,3 +146,97 @@ function fechaMinima(){
 } 
 
 
+  let ordenAsc = true;
+
+  function ordenarPorFecha(colIndex) {
+    const tabla = document.getElementById("tablaCitas");
+    const cuerpo = tabla.tBodies[0];
+    const filas = Array.from(cuerpo.rows);
+
+    filas.sort((a, b) => {
+      const textoA = a.cells[colIndex].innerText.trim();
+      const textoB = b.cells[colIndex].innerText.trim();
+
+      const fechaA = convertirFechaHora(textoA);
+      const fechaB = convertirFechaHora(textoB);
+
+      return ordenAsc ? fechaA - fechaB : fechaB - fechaA;
+    });
+
+    filas.forEach(fila => cuerpo.appendChild(fila));
+
+    ordenAsc = !ordenAsc;
+  }
+
+  // Convierte "16/08/25 02:51 p.m." a objeto Date
+  function convertirFechaHora(fechaStr) {
+    // Separa fecha y hora
+    const [fecha, hora, ampm] = fechaStr.split(" ");
+
+    const [dia, mes, anioCorto] = fecha.split("/");
+    const [horas, minutos] = hora.split(":");
+
+    // Año con 20xx
+    const anio = 2000 + parseInt(anioCorto);
+
+    let h = parseInt(horas, 10);
+    const m = parseInt(minutos, 10);
+
+    // Ajustar AM/PM
+    if (ampm.toLowerCase().includes("p") && h < 12) {
+      h += 12;
+    }
+    if (ampm.toLowerCase().includes("a") && h === 12) {
+      h = 0; // medianoche
+    }
+
+    return new Date(anio, mes - 1, dia, h, m);
+  }
+
+
+  function crearListadoBicis(bicis) {
+  const lista = document.getElementById("lista-bicis");
+  lista.innerHTML = ""; // Limpiar contenido previo
+
+  if (bicis.length === 0) {
+    // Mostrar mensaje y botón si no hay bicis
+    const div = document.createElement("div");
+    div.classList.add("text-center", "my-3");
+
+    const mensaje = document.createElement("p");
+    mensaje.textContent = "No tienes bicis registradas";
+    div.appendChild(mensaje);
+
+    const btnAgregar = document.createElement("a");
+    btnAgregar.classList.add("btn", "btn-primary");
+    btnAgregar.href = "bicis_cliente.html"; // Ajusta la ruta a tu página de registro
+    btnAgregar.textContent = "Agregar bici";
+    div.appendChild(btnAgregar);
+
+    lista.appendChild(div);
+    return;
+  }
+
+  // Si hay bicis, generar checkboxes
+  bicis.forEach((bici, index) => {
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    div.classList.add("form-check");
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.classList.add("form-check-input");
+    input.value = bici.bici_id;
+    input.id = `chk${index + 1}`;
+
+    const label = document.createElement("label");
+    label.classList.add("form-check-label");
+    label.setAttribute("for", `chk${index + 1}`);
+    label.textContent = bici.modelo;
+
+    div.appendChild(input);
+    div.appendChild(label);
+    li.appendChild(div);
+    lista.appendChild(li);
+  });
+}

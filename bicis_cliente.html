@@ -48,8 +48,7 @@
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="citas.html">Citas</a></li>
         <li class="nav-item"><a class="nav-link active" href="bicis_cliente.html">Mis bicis</a></li>
-        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-        <li class="nav-item"><a class="nav-link" href="promo.html">Promociones</a></li>
+        
         <li class="nav-item"><a class="nav-link text-danger" href="#" onclick="cerrar_sesion()">Cerrar sesión</a></li>
       </ul>
     </div>
@@ -59,12 +58,17 @@
 <!-- Contenido Principal -->
 <div class="container my-5">
   <div class="row g-4">
-
     <!-- Columna única -->
     <div class="col-12">
-      
+<!-- Botón Regresar alineado a la derecha -->
+<div class="mt-3 d-flex justify-content-end">
+  <a href="citas.html" class="btn btn-outline-secondary">
+    ⬅ Regresar
+  </a>
+</div>
       <!-- Formulario Nueva Bici -->
       <div class="form-section shadow-sm">
+        
         <h4 class="mb-3 fw-bold">Registrar Nueva Bici</h4>
         <form id="form-nueva-bici" class="row g-3">
           <div class="col-md-4"><input type="text" class="form-control" id="marca" placeholder="Marca" required></div>
@@ -97,11 +101,14 @@
         </form>
       </div>
 
+
+
       <!-- Lista de Bicis -->
       <div class="card shadow-sm mt-4">
         <div class="card-header bg-warning text-white">Bicis Registradas</div>
         <div class="card-body">
           <div id="listaBicis" class="d-flex flex-column gap-3">
+            
             <!-- Aquí se generan las cards -->
           </div>
         </div>
@@ -111,6 +118,90 @@
 
   </div>
 </div>
+
+<!-- Modal: Mantenimientos de la bici -->
+<div class="modal fade" id="modalMantenimientos" tabindex="-1" aria-labelledby="modalMantenimientosLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- modal-lg para hacerlo más ancho -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalMantenimientosLabel">Mantenimientos </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modelo bici</p>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Tipo de Servicio</th>
+              <th>Fecha Servicio</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody id="tablaMantenimientos">
+            <!-- Aquí se insertarán las filas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Bici -->
+<div class="modal fade" id="modalEditarBici" tabindex="-1" aria-labelledby="modalEditarBiciLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarBiciLabel">Editar Bici</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditarBici">
+          <input type="hidden" id="editarBiciId"> <!-- Para guardar el ID -->
+          <div class="mb-3">
+            <label for="editarMarca" class="form-label">Marca</label>
+            <input type="text" class="form-control" id="editarMarca" required>
+          </div>
+          <div class="mb-3">
+            <label for="editarModelo" class="form-label">Modelo</label>
+            <input type="text" class="form-control" id="editarModelo" required>
+          </div>
+          <div class="mb-3">
+            <label for="editarTipo" class="form-label">Tipo</label>
+            <input type="text" class="form-control" id="editarTipo">
+          </div>
+          <div class="mb-3">
+            <label for="editarTalla" class="form-label">Talla</label>
+            <input type="text" class="form-control" id="editarTalla">
+          </div>
+          <div class="mb-3">
+            <label for="editarRodada" class="form-label">Rodada</label>
+            <input type="text" class="form-control" id="editarRodada">
+          </div>
+          <div class="mb-3">
+            <label for="editarColor" class="form-label">Color</label>
+            <input type="text" class="form-control" id="editarColor">
+          </div>
+          <div class="mb-3">
+            <label for="editarSerie" class="form-label">No. de Serie</label>
+            <input type="text" class="form-control" id="editarSerie">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarBici">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -57,13 +57,27 @@
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="fw-bold text-secondary">Citas del Taller</h2>
+<div class="container-fluid mt-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-secondary mb-2 mb-md-0">Citas del Taller</h2>
+
+    <div class="d-flex gap-2 flex-wrap">
       <button class="btn btn-success shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevaCita">
-        <i class="bi bi-plus-circle me-2"></i>Agregar Cita
+        <i class="bi bi-calendar me-1"></i>Cita
       </button>
+      <button class="btn btn-primary text-white shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNuevaBici">
+        <i class="bi bi-bicycle me-1"></i>Bici
+      </button>
+    <a href="usuarios.html" class="btn btn-info text-white shadow-sm">
+  <i class="bi bi-person me-1"></i>Usuario
+</a>
     </div>
+  </div>
+</div>
+
+
+  
+
 
     <!-- Buscador -->
     <div class="mb-3">
@@ -80,6 +94,7 @@
       <div>
         <label for="filtroEstado" class="form-label fw-semibold">Filtrar por estado:</label>
         <select class="form-select" id="filtro-estado">
+                <option value="todos">Todos</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="en_proceso">En proceso</option>
                 <option value="finalizado">Finalizado</option>
@@ -98,14 +113,14 @@
       <div class="card-header bg-warning text-dark">Listado de Citas</div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-hover align-middle">
+          <table class="table table-striped table-hover align-middle" id="tablaCitas">
             <thead>
               <tr>
                 <th>Folio</th>
-                <th>Fecha Cita</th>
+                <th onclick="ordenarPorFecha(1)">Fecha Cita ⬍</th>
                 <th>Cliente</th>
                 <th>Servicio</th>
-                <th>Fecha Entrega Estimada</th>
+                <th onclick="ordenarPorFecha(4)">Fecha Entrega Estimada ⬍</th>
                 <th>Estado</th>
                 <th>Tecnico</th>
                 <th>Acciones</th>
@@ -123,7 +138,7 @@
   <div class="modal fade" id="modalNuevaCita" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content shadow">
-        <form>
+        <form id="form-nueva-cita">
           <div class="modal-header">
             <h5 class="modal-title fw-bold">Agregar Nueva Cita</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -153,23 +168,22 @@
               </select>
             </div>
 
-            <div class="mb-3">
-              <label class="fw-semibold">Cantidad Bicicletas</label>
-              <input type="number" class="form-control" id="cantidad_bici" min="0" max="10" required>
-            </div>
+          
 
-            <div class="mb-3 d-flex align-items-center">
-              <p class="lead mb-0 me-3">Bicicletas:</p>
-              <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  Selecciona opciones
-                </button>
-                <ul class="dropdown-menu p-3">
-                  <li><div class="form-check"><input class="form-check-input" type="checkbox" id="chk1"><label class="form-check-label" for="chk1">Bici 1</label></div></li>
-                  <li><div class="form-check"><input class="form-check-input" type="checkbox" id="chk2"><label class="form-check-label" for="chk2">Bici 2</label></div></li>
-                </ul>
-              </div>
+             <!-- Bicicletas: texto + dropdown en la misma línea -->
+          <div class="mb-3 d-flex align-items-center">
+            <p class="lead mb-0 me-3">Bicicletas:</p>
+            <div class="dropdown">
+              <button class="btn btn-success dropdown-toggle" type="button" id="dropdownCheckboxMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                Seleccionar...
+              </button>  <ul id="lista-bicis" class="dropdown-menu" aria-labelledby="dropdownCheckboxMenu" style="padding: 10px;">
+                
+               
+                <!-- Se agregan dinamicamente los modelos de bicis-->
+              </ul>
+            
             </div>
+          </div>
 
             <div class="mb-3">
               <label class="fw-semibold">Servicio</label>
@@ -181,10 +195,15 @@
                 <option value="104">Instalación de Componente menor</option>
               </select>
             </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción del Servicio</label>
+              <textarea class="form-control" id="descripcion" rows="3" required></textarea>
+            </div>
+            
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">Guardar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button id="cancelarModalCita" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           </div>
         </form>
       </div>
@@ -251,16 +270,94 @@
             <div id="mensaje-editar-cita" class="alert alert-danger d-none"></div>
           <div id="mensaje-exito-editar-cita" class="alert alert-success d-none"></div>
             <button type="button" class="btn btn-success me-auto" id="btn-dar-entrada">Registrar Entrada</button>
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btn-actualizar" class="btn btn-primary">Actualizar</button>
+            <button type="button" class="btn btn-danger me-auto" id="btn-finalizar">Finalizar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+  <!-- Botón para abrir el modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNuevaBici">
+  Registrar Nueva Bici
+</button>
+
+<!-- Modal nueva bici-->
+<div class="modal fade" id="modalNuevaBici" tabindex="-1" aria-labelledby="modalNuevaBiciLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content shadow-sm">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title fw-bold" id="modalNuevaBiciLabel">Registrar Nueva Bici</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-nueva-bici" class="row g-3">
+            <div class="mb-3">
+              <label class="fw-semibold">Cliente</label>
+              <div class="input-group">
+                <input type="text" id="id-cliente" class="form-control" placeholder="Ingresa el ID del cliente" required>
+                <button class="btn btn-primary" type="button" id="btn-cargar-cliente">Cargar</button>
+              </div>
+              <div id="nombre-cliente" class="mt-2 text-success"></div>
+            </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" id="marca" placeholder="Marca" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" id="modelo" placeholder="Modelo" required>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select text-muted" id="tipo" required>
+              <option value="" selected disabled>Tipo de bici</option>
+              <option value="Montaña">Montaña</option>
+              <option value="Ruta">Ruta</option>
+              <option value="Urbana">Urbana</option>
+              <option value="BMX">BMX</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select text-muted" id="talla" required>
+              <option value="" selected disabled>Talla</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select text-muted" id="rodada" required>
+              <option value="" selected disabled>Rodada</option>
+              <option value="20">20"</option>
+              <option value="24">24"</option>
+              <option value="26">26"</option>
+              <option value="27.5">27.5"</option>
+              <option value="29">29"</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" id="color" placeholder="Color" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="noSerie" placeholder="No. Serie" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="form-nueva-bici" class="btn btn-primary">Guardar Bici</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/dashboard.js"></script>
+  <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el))
+  </script>
+
 </body>
 </html>

@@ -27,6 +27,9 @@ async function cargarUsuarios() {
   try {
     const usuarios = await res.json();
     const tbody = document.getElementById("usuarios-body");
+    const btnConfirmarEliminar = document.getElementById("btnConfirmarEliminar");
+     let usuarioIdAEliminar = null; // <-- guardamos el id temporal
+
     tbody.innerHTML = "";
     usuarios.forEach((usuario) => {
       const fila = document.createElement("tr");
@@ -37,9 +40,27 @@ async function cargarUsuarios() {
         <td>${usuario.rol}</td>
         <td>
           <button class="btn btn-sm btn-primary btn-editar" data-id="${usuario.id}" data-bs-toggle="modal" data-bs-target="#modalEditarUsuario">Editar</button>
-          <button class="btn btn-sm btn-danger btn-eliminar" data-id="${usuario.id}" >Eliminar</button>
+          <button class="btn btn-sm btn-danger btn-eliminar" data-id="${usuario.id}" data-bs-toggle="modal" data-bs-target="#modalConfirmarEliminar" >Eliminar</button>
         </td>`;
       tbody.appendChild(fila);
+    });
+
+    // Delegar evento a todos los botones eliminar
+    document.querySelectorAll(".btn-eliminar").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        usuarioIdAEliminar = btn.getAttribute("data-id"); // guardamos id del usuario
+      });
+    });
+
+     // Confirmar eliminación
+    btnConfirmarEliminar.addEventListener("click", async () => {
+      if (usuarioIdAEliminar) {
+        await eliminarUsuario(usuarioIdAEliminar);
+        usuarioIdAEliminar = null; // limpiamos
+        const modal = bootstrap.Modal.getInstance(document.getElementById("modalConfirmarEliminar"));
+        modal.hide();
+        await cargarUsuarios(); // recargamos la tabla
+      }
     });
   } catch (error) {
     console.error("Error al procesar usuarios:", error);
@@ -59,10 +80,7 @@ function registrarEventos() {
       id_actual = e.target.dataset.id;
       consultarInfoUsuario(id_actual);
     }
-    if (e.target.classList.contains("btn-eliminar")){
-      id_actual = e.target.dataset.id;
-      eliminarUsuario(id_actual)
-    }
+   
   });
 
   document.getElementById("buscadorUsuarios").addEventListener("input", filtrarUsuarios);
@@ -161,7 +179,7 @@ function registrarUsuario(event) {
   }, 2000);
 })
 .catch((error) => {
-  console.error("Error en el registro:", error);
+ // console.error("Error en el registro:", error);
   mensajeDiv.textContent = error.message || "Ocurrió un error al registrar. Intenta de nuevo.";
   mensajeDiv.classList.remove("d-none");
 });
@@ -175,7 +193,7 @@ function registrarUsuario(event) {
 async function editarUsuario(event, id_actual) {
   event.preventDefault();
   if (!id_actual) return;
-
+ 
   const token = localStorage.getItem("token");
   if (!token) return mostrarMensajeExpirado();
 

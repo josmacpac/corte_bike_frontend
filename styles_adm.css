@@ -3,6 +3,16 @@
       font-family: 'Montserrat', sans-serif;
       background-color: #f8f9fa;
     }
+    .status span {
+  display: inline-block;
+  background: #ffcc00;
+  color: #333;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
     .navbar-brand span { font-weight: 600; color: #6c757d; }
     .btn-primary { background-color:#FFD600; border:none; color:#000; font-weight:600; }
     .btn-primary:hover { background-color:#e6c200; }
@@ -10,3 +20,10 @@
     .card-header { font-weight:600; }
     .table thead { background-color:#f1f1f1; font-weight:600; }
     .modal-header { background:#f8f9fa; }
+
+@media (max-width: 576px) {
+  #tablaUsuarios th, #tablaUsuarios td {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
