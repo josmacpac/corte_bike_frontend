@@ -27,3 +27,12 @@
     padding: 0.3rem 0.5rem;
   }
 }
+
+.badge-custom {
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: Arial, sans-serif;
+  padding: 0.4em 0.8em;
+  border-radius: 0.5rem;
+}
+

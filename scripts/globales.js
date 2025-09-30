@@ -240,3 +240,50 @@ function fechaMinima(){
     lista.appendChild(li);
   });
 }
+
+
+// Mostrar spinner
+function mostrarSpinner() {
+  console.log("spinner...")
+  const spinner = document.getElementById("spinner");
+  if (spinner) {
+    spinner.classList.remove("d-none");
+  }
+}
+
+// Ocultar spinner
+function ocultarSpinner() {
+  const spinner = document.getElementById("spinner");
+  if (spinner) {
+    spinner.classList.add("d-none");
+  }
+}
+
+function cerrar_sesion(){
+  console.log("cerrando sesion..")
+  mostrarSpinner("Cerrando sesión...");
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      window.location.href = '/';
+    }, 3000);
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const btnCerrar = document.getElementById("btnCerrarSesion");
+  if (btnCerrar) {
+    btnCerrar.addEventListener("click", (e) => {
+      e.preventDefault(); // evita que el <a> siga el href
+      mostrarSpinner("Cerrando sesión...");
+      console.log("Cerrar sesión ejecutada");
+
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        window.location.href = '/';
+      }, 800);
+    });
+  }
+});
+// Exportar funciones si usas módulos
+// export { mostrarSpinner, ocultarSpinner };

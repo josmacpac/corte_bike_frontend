@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===============================
 
 async function cargarUsuarios() {
+  mostrarSpinner();
   const res = await secureFetch(`${CONFIG.API_URL}/api/usuarios/ver_usuarios`, {
     method: "GET",
   });
@@ -63,7 +64,10 @@ async function cargarUsuarios() {
       }
     });
   } catch (error) {
+    ocultarSpinner();
     console.error("Error al procesar usuarios:", error);
+  } finally{
+    ocultarSpinner();
   }
 }
 
@@ -104,6 +108,7 @@ function filtrarUsuarios() {
 // ===============================
 
 async function consultarInfoUsuario(id) {
+  mostrarSpinner();
   const res = await secureFetch(`${CONFIG.API_URL}/api/usuarios/${id}`, {
     method: "GET",
   });
@@ -117,8 +122,11 @@ async function consultarInfoUsuario(id) {
     document.getElementById("editar-telefono").value = usuario.telefono;
     document.getElementById("editar-rol").value = usuario.rol;
   } catch (error) {
+    ocultarSpinner();
     console.error("Error al cargar usuario", error);
     alert("No se pudo cargar el usuario");
+  } finally{
+    ocultarSpinner();
   }
 }
 
@@ -127,7 +135,9 @@ async function consultarInfoUsuario(id) {
 // ===============================
 
 function registrarUsuario(event) {
+  
   event.preventDefault();
+  mostrarSpinner();
   const token = localStorage.getItem("token");
   if (!token) return mostrarMensajeExpirado();
 
@@ -161,6 +171,7 @@ function registrarUsuario(event) {
     body: JSON.stringify(data),
   })
 .then(async (res) => {
+  ocultarSpinner();
   const respuesta = await res.json();
 
   if (!res.ok) {
@@ -179,6 +190,7 @@ function registrarUsuario(event) {
   }, 2000);
 })
 .catch((error) => {
+  ocultarSpinner();
  // console.error("Error en el registro:", error);
   mensajeDiv.textContent = error.message || "Ocurrió un error al registrar. Intenta de nuevo.";
   mensajeDiv.classList.remove("d-none");
@@ -221,6 +233,7 @@ async function editarUsuario(event, id_actual) {
   mensajeDiv.classList.add("d-none");
 
   try {
+    mostrarSpinner();
     const res = await fetch(`${CONFIG.API_URL}/api/usuarios/mod_usuario/${id_actual}`, {
       method: "PATCH",
       headers: {
@@ -244,9 +257,12 @@ async function editarUsuario(event, id_actual) {
       cargarUsuarios();
     }, 2000);
   } catch (error) {
+    ocultarSpinner();
     console.error("Error en la actualización:", error);
     mensajeDiv.textContent = error.message || "Ocurrió un error al actualizar.";
     mensajeDiv.classList.remove("d-none");
+  } finally{
+    ocultarSpinner();
   }
 }
 
@@ -265,6 +281,7 @@ if (!id_actual) return;
   const mensajeExito = document.getElementById("mensaje-exito-eliminar");
 
   try {
+    mostrarSpinner();
     const res = await fetch(`${CONFIG.API_URL}/api/usuarios/eliminar_usuario/${id_actual}`, {
       method: "DELETE",
       headers: {
@@ -283,8 +300,11 @@ if (!id_actual) return;
 }, 1500);
     
   } catch (error) {
+    ocultarSpinner()
     console.error("Error al eliminar usuario:", error);
     mensajeDiv.textContent = error.message || "Ocurrió un error al eliminar usuario.";
     mensajeDiv.classList.remove("d-none");
+  } finally{
+    ocultarSpinner();
   }
 }
